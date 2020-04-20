@@ -224,9 +224,6 @@ class IngredientRow extends React.Component {
     this.handleMetricUnitChange = this.handleMetricUnitChange.bind(this);
     this.handleImperialAmtChange = this.handleImperialAmtChange.bind(this);
     this.handleMetricAmtChange = this.handleMetricAmtChange.bind(this);
-    this.changeAmountWithIngredient = this.changeAmountWithIngredient.bind(
-      this
-    );
     this.changeAmount = this.changeAmount.bind(this);
     this.imperialValue = "0";
     this.metricValue = "0";
@@ -236,7 +233,7 @@ class IngredientRow extends React.Component {
     let newIngredient = event.target.value;
     this.setState({ ingredient: newIngredient });
     if (newIngredient === "") {
-      this.changeAmountWithIngredient(0, newIngredient);
+      this.changeAmount(0);
     } else {
       let oldAmtCups = this.imperialValue / getPerCup(this.state.imperialUnit);
       let newAmtGrams = convertImperialToGrams(
@@ -244,7 +241,7 @@ class IngredientRow extends React.Component {
         newIngredient,
         "cups"
       );
-      this.changeAmountWithIngredient(newAmtGrams, newIngredient);
+      this.changeAmount(newAmtGrams);
     }
   }
 
@@ -275,32 +272,30 @@ class IngredientRow extends React.Component {
     this.changeAmount(newAmt);
   }
 
-  changeAmountWithIngredient(newAmt, newIngredient) {
-    let newAmtImperial = convertToImperial(
-      newAmt,
-      this.state.imperialUnit,
-      newIngredient
-    );
-    let oldAmtImperial = this.imperialValue;
-    if (parseFloat(newAmtImperial) !== parseFloat(oldAmtImperial)) {
-      this.imperialValue = Number.isNaN(newAmtImperial)
-        ? oldAmtImperial
-        : newAmtImperial;
-    }
-    let newAmtMetric = convertToMetric(newAmt, this.state.metricUnit);
-
-    let oldAmtMetric = this.metricValue;
-
-    if (parseFloat(newAmtMetric) !== parseFloat(oldAmtMetric)) {
-      this.metricValue = Number.isNaN(newAmtMetric)
-        ? oldAmtMetric
-        : newAmtMetric;
-    }
-    this.setState({ amt: newAmt });
-  }
-
   changeAmount(newAmt) {
-    this.changeAmountWithIngredient(newAmt, this.state.ingredient);
+    this.setState(state => {
+      let newAmtImperial = convertToImperial(
+        newAmt,
+        this.state.imperialUnit,
+        state.ingredient
+      );
+      let oldAmtImperial = this.imperialValue;
+      if (parseFloat(newAmtImperial) !== parseFloat(oldAmtImperial)) {
+        this.imperialValue = Number.isNaN(newAmtImperial)
+          ? oldAmtImperial
+          : newAmtImperial;
+      }
+      let newAmtMetric = convertToMetric(newAmt, this.state.metricUnit);
+
+      let oldAmtMetric = this.metricValue;
+
+      if (parseFloat(newAmtMetric) !== parseFloat(oldAmtMetric)) {
+        this.metricValue = Number.isNaN(newAmtMetric)
+          ? oldAmtMetric
+          : newAmtMetric;
+      }
+      return { amt: newAmt };
+    });
   }
 
   render() {
