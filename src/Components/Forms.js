@@ -1,4 +1,5 @@
 import React from "react";
+// import { evaluate } from "mathjs";
 
 let ingredients = [
   { name: "", gramsPerCup: null },
@@ -18,7 +19,7 @@ let imperialUnits = [
 
 let metricUnits = [
   { name: "grams", perGram: 1 },
-  { name: "oz.", perGrams: 28.349523125 }
+  { name: "oz.", perGram: 28.349523125 }
 ];
 
 // returns the grams/Cup for the given ingredient name
@@ -51,7 +52,7 @@ function convertToMetric(grams, metricUnit) {
   if (Number.isNaN(parseFloat(grams))) {
     return grams;
   } else {
-    return grams * getPerGram(metricUnit);
+    return parseFloat(grams) * getPerGram(metricUnit);
   }
 }
 
@@ -247,10 +248,18 @@ class IngredientRow extends React.Component {
 
   handleImperialUnitChange(event) {
     this.setState({ imperialUnit: event.target.value });
+    let asCups = this.imperialValue / getPerCup(event.target.value);
+    let newAmtGrams = convertImperialToGrams(
+      asCups,
+      this.state.ingredient,
+      "cups"
+    );
+    this.changeAmount(newAmtGrams);
   }
 
   handleMetricUnitChange(event) {
     this.setState({ metricUnit: event.target.value });
+    this.metricValue = convertToMetric(this.state.amt, event.target.value);
   }
 
   handleImperialAmtChange(event) {
@@ -264,10 +273,7 @@ class IngredientRow extends React.Component {
   }
 
   handleMetricAmtChange(event) {
-    let newAmt = convertToGrams(
-      parseFloat(event.target.value),
-      this.state.metricUnit
-    );
+    let newAmt = convertToGrams(event.target.value, this.state.metricUnit);
     this.metricValue = event.target.value;
     this.changeAmount(newAmt);
   }
@@ -276,7 +282,7 @@ class IngredientRow extends React.Component {
     this.setState(state => {
       let newAmtImperial = convertToImperial(
         newAmt,
-        this.state.imperialUnit,
+        state.imperialUnit,
         state.ingredient
       );
       let oldAmtImperial = this.imperialValue;
@@ -285,7 +291,7 @@ class IngredientRow extends React.Component {
           ? oldAmtImperial
           : newAmtImperial;
       }
-      let newAmtMetric = convertToMetric(newAmt, this.state.metricUnit);
+      let newAmtMetric = convertToMetric(newAmt, state.metricUnit);
 
       let oldAmtMetric = this.metricValue;
 
