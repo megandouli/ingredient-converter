@@ -3,12 +3,32 @@ import React from "react";
 
 let ingredients = [
   { name: "", gramsPerCup: null },
-  { name: "Flour", gramsPerCup: 242 },
-  { name: "Sugar", gramsPerCup: 200 },
+  { name: "Baking Powder", gramsPerCup: 192 },
+  { name: "Baking Soda", gramsPerCup: 288 },
   { name: "Butter", gramsPerCup: 227 },
-  { name: "Cocoa Powder", gramsPerCup: 100 },
-  { name: "Milk", gramsPerCup: 242 },
-  { name: "Water", gramsPerCup: 236.59 }
+  { name: "Buttermilk", gramsPerCup: 227 },
+  { name: "Chocolate Chips", gramsPerCup: 170 },
+  { name: "Cocoa Powder", gramsPerCup: 84 },
+  { name: "Cornstarch", gramsPerCup: 112 },
+  { name: "Flour — AP", gramsPerCup: 120 },
+  { name: "Flour — Bread", gramsPerCup: 120 },
+  { name: "Flour — Cake", gramsPerCup: 114 },
+  { name: "Flour — Whole Wheat", gramsPerCup: 113 },
+  { name: "Heavy Cream", gramsPerCup: 227 },
+  { name: "Honey", gramsPerCup: 336 },
+  { name: "Mayonnaise", gramsPerCup: 226 },
+  { name: "Milk", gramsPerCup: 227 },
+  { name: "Molasses", gramsPerCup: 322 },
+  { name: "Olive Oil", gramsPerCup: 200 },
+  { name: "Peanut Butter", gramsPerCup: 270 },
+  { name: "Salt", gramsPerCup: 256 },
+  { name: "Sour Cream", gramsPerCup: 227 },
+  { name: "Sugar — White", gramsPerCup: 200 },
+  { name: "Sugar — Brown(Packed)", gramsPerCup: 213 },
+  { name: "Sugar — Confectioner's", gramsPerCup: 113 },
+  { name: "Vegetable Oil", gramsPerCup: 200 },
+  { name: "Water", gramsPerCup: 236.59 },
+  { name: "Yogurt Plain", gramsPerCup: 227 }
 ];
 
 let imperialUnits = [
@@ -19,7 +39,7 @@ let imperialUnits = [
 
 let metricUnits = [
   { name: "grams", perGram: 1 },
-  { name: "oz.", perGram: 28.349523125 }
+  { name: "oz.", perGram: 1 / 28.349523125 }
 ];
 
 // returns the grams/Cup for the given ingredient name
@@ -52,7 +72,7 @@ function convertToMetric(grams, metricUnit) {
   if (Number.isNaN(parseFloat(grams))) {
     return grams;
   } else {
-    return parseFloat(grams) * getPerGram(metricUnit);
+    return (parseFloat(grams) * getPerGram(metricUnit)).toFixed(3);
   }
 }
 
@@ -61,7 +81,7 @@ function convertToGrams(amt, metricUnit) {
   if (Number.isNaN(parseFloat(amt))) {
     return amt;
   } else {
-    return amt / getPerGram(metricUnit);
+    return (amt / getPerGram(metricUnit)).toFixed(3);
   }
 }
 
@@ -73,7 +93,7 @@ function convertToImperial(grams, imperialUnit, ingredName) {
   } else {
     var asCups = grams / getGramsPerCup(ingredName);
     var result = asCups * getPerCup(imperialUnit);
-    return result;
+    return result.toFixed(3);
   }
 }
 
@@ -85,7 +105,7 @@ function convertImperialToGrams(amt, ingredName, imperialUnit) {
   } else {
     var asCups = amt / getPerCup(imperialUnit);
     var result = asCups * getGramsPerCup(ingredName);
-    return result;
+    return result.toFixed(3);
   }
 }
 
@@ -136,9 +156,10 @@ class GenericMenu extends React.Component {
         label={this.props.label}
         form={
           <select
+            data-live-search="true"
             onChange={this.props.handleChange}
             value={this.props.value}
-            className={this.props.className + " select-menu"}
+            className={"select-menu " + this.props.className}
           >
             {options.map(option => {
               return <MenuOption key={option} name={option} />;
@@ -287,18 +308,19 @@ class IngredientRow extends React.Component {
       );
       let oldAmtImperial = this.imperialValue;
       if (parseFloat(newAmtImperial) !== parseFloat(oldAmtImperial)) {
-        this.imperialValue = Number.isNaN(newAmtImperial)
+        this.imperialValue = Number.isNaN(parseFloat(newAmtImperial))
           ? oldAmtImperial
-          : newAmtImperial;
+          : parseFloat(newAmtImperial);
+        console.log("imperial amt after: " + this.imperialValue);
       }
       let newAmtMetric = convertToMetric(newAmt, state.metricUnit);
 
       let oldAmtMetric = this.metricValue;
 
       if (parseFloat(newAmtMetric) !== parseFloat(oldAmtMetric)) {
-        this.metricValue = Number.isNaN(newAmtMetric)
+        this.metricValue = Number.isNaN(parseFloat(newAmtMetric))
           ? oldAmtMetric
-          : newAmtMetric;
+          : parseFloat(newAmtMetric);
       }
       return { amt: newAmt };
     });
@@ -306,7 +328,7 @@ class IngredientRow extends React.Component {
 
   render() {
     return (
-      <div className="form-row w-50 m-auto">
+      <div className="form-row m-auto">
         <IngredientMenu
           handleChange={this.handleIngredientChange}
           value={this.state.ingredient}
@@ -327,6 +349,12 @@ class IngredientRow extends React.Component {
           handleChange={this.handleMetricUnitChange}
           value={this.state.metricUnit}
         />
+        <button
+          onClick={() => this.props.onDelete(this.props.id)}
+          className="remove-button"
+        >
+          <i className="fa fa-trash"></i>
+        </button>
       </div>
     );
   }

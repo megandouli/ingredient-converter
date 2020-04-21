@@ -1,6 +1,6 @@
 import React from "react";
 import Paragraph from "./Paragraph.js";
-import IngredientRow from "./Forms.js";
+import Entries from "./Entries.js";
 
 class AppBody extends React.Component {
   render() {
@@ -14,7 +14,7 @@ class AppBody extends React.Component {
           pain. This app is here to help you convert your common baking
           ingredients into the metric system!"
         />
-        <IngredientRow />
+        <Entries />
       </div>
     );
   }

@@ -27,10 +27,13 @@ h1 {
   line-height: 2;
   border: 1px solid #d2c6b2;
   padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 0px;
+  margin-right: 4px;
 }
 
 .ingredient-menu {
-  width: 150px;
+  width: 250px;
 }
 
 .imperial-menu {
@@ -46,4 +49,33 @@ h1 {
   box-sizing: border-box;
   border-radius: 0px;
   height: 1.75;
+}
+
+.App-footer p {
+  font-size: 12px;
+}
+
+#add-button {
+  width: 200px;
+  border: none;
+  color: white;
+  background-color: #69371b;
+}
+
+.remove-button {
+  font-size: 20px;
+  color: white;
+  padding: 0px;
+  margin-left: 10px;
+  background-color: #eb4559;
+  border-radius: 100%;
+  border: none;
+  height: 40px;
+  position: relative;
+  top: 45px;
+}
+
+i {
+  padding-left: 10px;
+  padding-right: 10px;
 }
