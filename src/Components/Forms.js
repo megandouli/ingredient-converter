@@ -16,7 +16,7 @@ let ingredients = [
   { name: "Flour — Whole Wheat", gramsPerCup: 113 },
   { name: "Heavy Cream", gramsPerCup: 227 },
   { name: "Honey", gramsPerCup: 336 },
-  { name: "Mayonnaise", gramsPerCup: 226 },
+  { name: "Mayonnaise", gramsPerCup: 220 },
   { name: "Milk", gramsPerCup: 227 },
   { name: "Molasses", gramsPerCup: 322 },
   { name: "Olive Oil", gramsPerCup: 200 },
