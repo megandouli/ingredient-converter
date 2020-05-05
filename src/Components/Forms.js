@@ -137,7 +137,7 @@ class MenuOption extends React.Component {
 class GenericForm extends React.Component {
   render() {
     return (
-      <div className="w-50 m-auto mt-4 pt-4 generic-form col">
+      <div className="m-auto mt-4 pt-4 generic-form col">
         <label>
           {this.props.label}
           <br />
@@ -186,7 +186,7 @@ class IngredientMenu extends React.Component {
         value={this.props.value}
         handleChange={this.props.handleChange}
         options={this.ingredients}
-        className="ingredient-menu"
+        className="ingredient-menu col-md-8"
       />
     );
   }
@@ -333,28 +333,34 @@ class IngredientRow extends React.Component {
           handleChange={this.handleIngredientChange}
           value={this.state.ingredient}
         />
-        <AmountInput
-          handleChange={this.handleImperialAmtChange}
-          value={this.imperialValue}
-        />
-        <ImperialDropdown
-          handleChange={this.handleImperialUnitChange}
-          value={this.state.imperialUnit}
-        />
-        <AmountInput
-          handleChange={this.handleMetricAmtChange}
-          value={this.metricValue}
-        />
-        <MetricDropdown
-          handleChange={this.handleMetricUnitChange}
-          value={this.state.metricUnit}
-        />
-        <button
-          onClick={() => this.props.onDelete(this.props.id)}
-          className="remove-button"
-        >
-          <i className="fa fa-trash"></i>
-        </button>
+        <div className="form-row m-0">
+          <div className="form-row m-0">
+            <AmountInput
+              handleChange={this.handleImperialAmtChange}
+              value={this.imperialValue}
+            />
+            <ImperialDropdown
+              handleChange={this.handleImperialUnitChange}
+              value={this.state.imperialUnit}
+            />
+          </div>
+          <div className="form-row m-0">
+            <AmountInput
+              handleChange={this.handleMetricAmtChange}
+              value={this.metricValue}
+            />
+            <MetricDropdown
+              handleChange={this.handleMetricUnitChange}
+              value={this.state.metricUnit}
+            />
+            <button
+              onClick={() => this.props.onDelete(this.props.id)}
+              className="remove-button mb-5"
+            >
+              <i className="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

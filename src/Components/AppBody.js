@@ -5,7 +5,7 @@ import Entries from "./Entries.js";
 class AppBody extends React.Component {
   render() {
     return (
-      <div className="App-body p-5">
+      <div className="App-body pt-4 pb-3 pl-2 pr-2">
         <Paragraph
           text="Measuring ingredients by weight is by far the most precise way of
           determining how much of something should be used in a recipe. However,

@@ -27,14 +27,14 @@ class Entries extends React.Component {
   render() {
     let entries = Array.from(this.state.allEntries);
     return (
-      <div className="entries w-50 m-auto">
+      <div className="entries col-md-6 m-auto">
         {entries.map(entry => {
           return (
             <IngredientRow key={entry} id={entry} onDelete={this.onDelete} />
           );
         })}
         <button className="p-2 mt-5" id="add-button" onClick={this.handleAdd}>
-          Add Row
+          Add Item
         </button>
       </div>
     );
